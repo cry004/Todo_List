@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=992px, maximum-scale=5.0, user-scalable=1" >
 	<title>To Do List</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
@@ -11,10 +12,10 @@
 		
 	</div>
 </body>
+<script src="//code.jquery.com/jquery-1.10.0.min.js"></script>
 <script src="js/react.js"></script>
 <script src="js/react-dom.js"></script>
 <script src="js/browser.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/babel">
 	var MessageForm = React.createClass({
@@ -78,7 +79,7 @@
 					panelclass += 'panel-warning';
 					break;
 				}
-			console.log(panelclass);
+			//console.log(panelclass);
 			return (
 				
 				<div className={panelclass}><div className="panel-heading">
@@ -128,19 +129,19 @@
 			}.bind(this));
 			return(
 				<div className="row">
-					<div className="col-lg-3">
+					<div className="col-lg-3 col-md-3">
 						<h2>All</h2>
 							{Listall}
 					</div>
-					<div className="col-lg-3">
+					<div className="col-lg-3 col-md-3">
 						<h2>Pending</h2>
 						{List1}
 					</div>
-					<div className="col-lg-3">
+					<div className="col-lg-3 col-md-3">
 						<h2>Active</h2>
 						{List2}
 					</div>
-					<div className="col-lg-3">
+					<div className="col-lg-3 col-md-3">
 						<h2>Completed</h2>
 						{List3}
 					</div>
