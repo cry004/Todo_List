@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div class="container" id="contain">
+		
+	</div>
+</body>
+<script src="js/react.js"></script>
+<script src="js/react-dom.js"></script>
+<script src="js/browser.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/babel">
+	var MessageForm = React.createClass({
+		handleSubmit: function(e){
+			e.preventDefault();
+			var temp = ReactDOM.findDOMNode(this.refs.nameInput).value;
+			var temp2 = ReactDOM.findDOMNode(this.refs.textInput).value;
+			var temp3 = ReactDOM.findDOMNode(this.refs.category).value;
+			if(!temp || !temp2 || !temp3){
+				return false;
+			}
+				this.props.onuserSubmit(
+					{name: temp , message: temp2 , category: temp3}
+				)		
+			
+			ReactDOM.findDOMNode(this.refs.nameInput).value = '';
+			ReactDOM.findDOMNode(this.refs.textInput).value = '';
+			ReactDOM.findDOMNode(this.refs.category).value = '';
+		},
+		render: function(){
+			return(
+				<div className="row">
+				<form onSubmit={this.handleSubmit}>
+					<div className="col-lg-4">
+						<input className = "form-control" ref="nameInput" type="text" placeholder="name"/>
+					</div>
+					<div className="col-lg-4">
+						<input className = "form-control" ref="textInput" type="text" placeholder="message"/>
+					</div>
+					<div className="form-group col-lg-2">
+						<select ref="category" className="form-control" id="sel1">
+				            <option role="presentation"  value="1">Pending</option >
+				            <option role="presentation"  value="2">Active</option >
+				            <option role="presentation"  value="3">Completed</option >
+				         </select>
+				    </div>
+					<button className="btn btn-sm btn-primary">Send</button>
+				</form>
+				</div>
+			)
+		}
+	});
+	var Item = React.createClass({
+		handleClick: function(){			
+			this.props.deletemessage(this.props.post)
+		},
+		render: function(){
+			var panelclass =  'panel ';
+			switch(this.props.from){
+				case 'all':
+					panelclass += 'panel-primary';
+					break;
+				case 'pending':
+					panelclass += 'panel-info';
+					break;
+				case 'active':
+					panelclass += 'panel-success';
+					break;
+				case 'completed':
+					panelclass += 'panel-warning';
+					break;
+				}
+			console.log(panelclass);
+			return (
+				
+				<div className={panelclass}><div className="panel-heading">
+					<div className="close" onClick={this.handleClick}>X</div>
+					<div className="panel-title">{this.props.post.name}</div>
+				</div>
+				<div className="panel-body">{this.props.post.message}</div>
+				</div>
+			)
+		}
+	});
+	var category1,category2,category3,categoryall;
+	var MessageList = React.createClass({
+		handeleChange: function(obj){
+			this.props.deletemessage(obj);
+			
+		},
+		render: function() {
+			categoryall = [];
+			category1 = [];
+			category2 = [];
+			category3 = [];
+			var List = this.props.list.map(function(post){ //loops
+				
+				if(post.category == 1){
+					category1.push(post) 
+				}
+				if(post.category == 2){
+					category2.push(post) 
+				}
+				if(post.category == 3){
+					category3.push(post)
+				}
+				categoryall.push(post)
+			}.bind(this));
+			var Listall = categoryall.map(function(post){
+				return <Item post = {post} deletemessage = {this.handeleChange} from ="all"/>
+			}.bind(this));
+			var List1 = category1.map(function(post){
+				return <Item post = {post} deletemessage = {this.handeleChange} from ="pending"/>
+			}.bind(this));
+			var List2 = category2.map(function(post){
+				return <Item post = {post} deletemessage = {this.handeleChange} from ="active"/>
+			}.bind(this));
+			var List3 = category3.map(function(post){
+				return <Item post = {post} deletemessage = {this.handeleChange} from ="completed"/>
+			}.bind(this));
+			return(
+				<div className="row">
+					<div className="col-lg-3">
+						<h2>All</h2>
+							{Listall}
+					</div>
+					<div className="col-lg-3">
+						<h2>Pending</h2>
+						{List1}
+					</div>
+					<div className="col-lg-3">
+						<h2>Active</h2>
+						{List2}
+					</div>
+					<div className="col-lg-3">
+						<h2>Completed</h2>
+						{List3}
+					</div>
+				</div>
+			)		
+		}
+	});
+	var Board = React.createClass({
+		getInitialState: function () {
+          return {data: []};
+        },
+		handeleChange: function(obj){	
+			var message = this.state.data;		
+			var messageList = message.concat([obj]); 
+			this.setState({
+				data: messageList
+			})
+			
+		},
+		deletemessage: function(obj){
+			var index = this.state.data.indexOf(obj);
+			//console.log(index);
+			if(index > -1){
+				this.state.data.splice(index,1);
+			}
+			this.setState({
+				
+			})
+		},
+		render: function(){
+			return(
+				<div>
+					<div className="jumbotron">
+						<h1>Todo List</h1>
+						<MessageForm onuserSubmit={this.handeleChange}/>
+					</div>
+					<MessageList list={this.state.data} deletemessage={this.deletemessage}/>
+				</div>
+			);
+		}
+	});
+	ReactDOM.render(<Board/>,document.getElementById('contain'));
+</script>
+</html>

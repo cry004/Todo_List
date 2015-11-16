@@ -1,0 +1,5 @@
+html,body {width: 100%; height: 100%}
+.btn {padding: 2px 26px; font-size: 19px}
+.btn .caret {margin-left: 20px;}
+.jumbotron h1, .jumbotron .h1 {font-size: 47px; margin-bottom: 30px;}
+h2 {text-align: center}
