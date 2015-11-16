@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>To Do List</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
@@ -24,6 +24,7 @@
 			var temp2 = ReactDOM.findDOMNode(this.refs.textInput).value;
 			var temp3 = ReactDOM.findDOMNode(this.refs.category).value;
 			if(!temp || !temp2 || !temp3){
+				alert('Please fill out the form !!!');
 				return false;
 			}
 				this.props.onuserSubmit(
